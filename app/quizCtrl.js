@@ -43,25 +43,56 @@
         
         var prevcatgid = -1;
         $scope.questions.forEach(function (q, index) {
-            if (prevcatgid != q.Category) {
-                prevcatgid = q.Category;
-                console.log(prevcatgid);
-                $scope.catgratio.push({ 'CategoryId': prevcatgid, 'Answered': 0, 'Correct': 0 });
-            }
+            q.Options.forEach(function (option, index, array) {
+                var catgadded = false;
+                $scope.catgratio.forEach(function (c, index) {
+                    if (c.CategoryId == option.Category) {
+                        $scope.catgratio.push({ 'CategoryId': option.Category, 'Answered': 0 });
+                        catgadded = true;
+                    }
+                });
+
+                if (catgadded == false) {
+                    $scope.catgratio.push({ 'CategoryId': option.Category, 'Answered': 0 });
+                }
+                
+            });
+            
         });
 
         $scope.questions.forEach(function (q, index) {
             answers.push({ 'QuizId': $scope.quiz.Id, 'QuestionId': q.Id, 'Answered': q.Answered });
-            $scope.catgratio.forEach(function (c, index)
-            {
-                if (c.CategoryId == q.Category) {
-                    c.Answered += 1;
-                    if ($scope.isCorrect(q) == 'correct') {
-                        c.Correct += 1;
-                    }
+
+            q.Options.forEach(function (option, index, array) {
+                if (helper.toBool(option.Selected)==true) {
+                    $scope.catgratio.forEach(function (c, index) {
+                        if (c.CategoryId == option.Category) {
+                            c.Answered += 1;
+                            
+                        }
+                    });
                 }
             });
+
+            
         });
+
+        var catgwithmost = '';
+        var catgcount = 0;
+        $scope.catgratio.forEach(function (c, index) {
+            if (c.Answered > catgcount) {
+                catgcount = c.Answered;
+                catgwithmost = c.CategoryId;
+            }
+            
+        });
+
+        console.log("Category with Most Answers: " + catgwithmost);
+        console.log("Category with Most Answers Count: " + catgcount);
+
+        $scope.mostansweredcatg = catgwithmost;
+        $scope.mostansweredcatgcount = catgcount;
+
         console.log($scope.questions);
         $scope.mode = 'result';
     }

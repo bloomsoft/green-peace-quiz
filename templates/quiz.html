@@ -73,6 +73,9 @@
         </div>
     </div>
     <div class="result" ng-show="mode=='result'">
+        <h4>Most Answered Category: {{mostansweredcatg}}</h4>
+        <h5>Answers count: {{mostansweredcatgcount}}</h5>
+        <hr />
         <h2>Quiz Result</h2>
         <div ng-repeat="question in questions">
             <div class="result-question">
@@ -88,15 +91,10 @@
                 <h4 class="alert {{ isCorrect(question) == 'correct'? 'alert-success': 'alert-danger'}}">Your answer is {{isCorrect(question)}}.</h4>
             </div>
         </div>
-        <h2>Result Summary Category Wise</h2>
-        <div ng-repeat="qr in catgratio">
-                <h4>{{$index + 1}}. {{qr.CategoryId}}</h4>
-                        <h5>Answered: {{qr.Answered}}</h5>
-                        <h5>Correct: {{qr.Correct}}</h5>
+                     
                 
-        </div>
         <h4 class="alert alert-info text-center">You may close this window now.</h4>
-        </div>
+    </div>
         
     <hr />
     <div class="" ng-show="mode!='result'" style="text-align: -webkit-center;">
